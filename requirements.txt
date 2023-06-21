@@ -1,0 +1,5 @@
+openai
+langchain = 0.0.201
+flask
+chromadb
+tiktoken = 0.4.0
