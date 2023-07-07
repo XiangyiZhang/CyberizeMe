@@ -21,7 +21,7 @@ class InfoCollector():
         Collects a report about the persona to help downstream LLM better generate reply.
     '''
 
-    def __init__(self,llm,agent_name:str, sender:str, ):
+    def __init__(self,llm,agent_name:str, sender:str):
         self.llm = llm
         self.agent_name = agent_name
         self.sender = sender
@@ -42,5 +42,7 @@ class InfoCollector():
         report = await info_collector.arun(info_collector_prompt.format(agent_name=self.agent_name, 
                                                                         sender=self.sender, 
                                                                         message=message))
+        
+
 
         return report

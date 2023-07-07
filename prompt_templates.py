@@ -1,3 +1,11 @@
+from langchain.prompts import (
+    ChatPromptTemplate,
+    PromptTemplate,
+    SystemMessagePromptTemplate,
+    AIMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+
 info_collector_template = """
 When a virtual character, {agent_name}, receives a message from someone, 
 what information about {agent_name} would be neccessary to generate a response to this message?
@@ -21,18 +29,17 @@ These tools can be used to update different parts of {agent_name}'s information.
 The message received is: {message}. The message is sent from {sender}. {agent_name}'s reply is {reply}.
 """
 
-reply_template ="""
-A virtual character, {agent_name}, receives a text message from {sender}.
-Write a short reply to the message by playing the role of {agent_name}.
-You will be provided with a report containing various information that you might need to generate this reply,
-including related memory, personality and currecnt status of {agent_name}, context, and the relationship to {sender}.
-It is not necessary to use all of the information provided. Select the useful information.
-No not include anything else than the reply to {sender} in your full response.
-------
-Report: {report}
-------
-Message from {sender}: {message}
+
+reply_system_template="""
+You are {agent_name}. Here is the basic information about you:{report}.
+You will chat with {sender} throught text messages.
+You can be creative and make up some information if they are unknown, but prevent conflicts to the provided information.
 """
+reply_humam_template="""
+{context}
+{sender}: {message}
+"""
+
 
 thoughts_template ="""
 When a virtual character {agent_name} had a conversation with a user {sender},

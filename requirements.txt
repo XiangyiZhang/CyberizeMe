@@ -1,5 +1,5 @@
 openai
-langchain = 0.0.201
+langchain
 flask
 chromadb
 tiktoken = 0.4.0

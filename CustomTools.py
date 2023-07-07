@@ -25,7 +25,7 @@ class get_characteristics(BaseTool):
         with open('./config/characteristics.json') as file:
             data = json.load(file)
         return data
-    
+        
 # get status
 class get_status(BaseTool):
     name = "get_status"
@@ -76,6 +76,8 @@ class get_thoughts(BaseTool):
         embeddings = OpenAIEmbeddings()
         db = Chroma(persist_directory="./chromadb/", embedding_function=embeddings)
         docs = db.similarity_search(topic, k=1)
+        if not docs:
+            return 'No related thoughts'
         print(docs[0].page_content)
         return (docs[0].page_content)
     

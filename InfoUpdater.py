@@ -1,5 +1,7 @@
 from langchain.chains import LLMChain, SequentialChain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain import PromptTemplate
 from prompt_templates import thoughts_template, importance_template
 
@@ -8,11 +10,10 @@ class InfoUpdater():
     The information updater to update thoughts, status, and relationship.
     It is a wrapper function that sequentially calls the specific updater.
     '''
-    def __init__(self,llm, agent_name, sender, db) -> None:
+    def __init__(self,llm, agent_name, sender) -> None:
         self.llm = llm
         self.agent_name = agent_name
         self.sender = sender,
-        self.db = db
         # self.reply = reply
 
     async def update_thoughts(self, conversation) -> str:
@@ -45,7 +46,12 @@ class InfoUpdater():
             length_function = len,
         )
         docs = text_splitter.create_documents([thoughts])
-        ids = self.db.add_documents(docs)
-        #self.db.persist()
-        return f"Updated: thoughts updated for {self.sender}."
-    
+        with open('config/thoughts.txt', 'a') as file:
+            for doc in docs:
+                file.write(doc.page_content + '\n') 
+        db = Chroma(persist_directory="./chromadb/", embedding_function=OpenAIEmbeddings())
+        #print(db._collection.count())
+        ids = db.add_documents(docs)
+        #print(db._collection.count())
+        #db.persist()
+        # return f"Updated: thoughts updated for {self.sender}."
