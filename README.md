@@ -6,8 +6,8 @@ The project is mainly based on LangChain and the new OpenAI Functions feature.
 **Backend:**
 - [x] main chat logic
 - [x] long term memory
-- [ ] short term context in redis
-- [ ] Flask server
+- [x] short term context in redis
+- [x] Flask server
 - [ ] voice conversion feature
 
 **Client:**
